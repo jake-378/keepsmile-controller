@@ -81,7 +81,16 @@ asyncio.run(main())
 
 - [Bluetooth protocol reference](docs/protocol.md)
 - [Reverse-engineering notes and scripts](analysis/README.md)
-- [Run the protocol tests](#testing)
+
+
+Install pytest and run the tests with:
+
+```powershell
+pip install pytest
+python -m pytest -q
+```
+
+## Testing
 
 Install pytest and run the tests with:
 
