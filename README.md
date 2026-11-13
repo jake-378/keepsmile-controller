@@ -77,18 +77,10 @@ async def main():
 asyncio.run(main())
 ```
 
-## Documentation and development
+## Documentation
 
 - [Bluetooth protocol reference](docs/protocol.md)
 - [Reverse-engineering notes and scripts](analysis/README.md)
-
-
-Install pytest and run the tests with:
-
-```powershell
-pip install pytest
-python -m pytest -q
-```
 
 ## Testing
 
