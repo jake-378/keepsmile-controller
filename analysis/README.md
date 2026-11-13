@@ -24,7 +24,7 @@ Expand-Archive com.KS.KSLights-2.3.5.ipa -DestinationPath ipa
 ### 2. Find the interesting code with strings
 
 ```powershell
-python analysis\\strings_scan.py ipa\\Payload\\Keepsmlie.app\\Keepsmlie "KS0|Switch|Color|Bright|Characteristic"
+python analysis\strings_scan.py ipa\Payload\Keepsmlie.app\Keepsmlie "KS0|Switch|Color|Bright|Characteristic"
 ```
 
 `strings_scan.py <binary> [regex]` prints every printable ASCII string with its file offset.
@@ -36,15 +36,15 @@ selectors in the binary, so this quickly turns up `BluetoothDataTool`, `SendData
 
 ```powershell
 $env:GHIDRA_HEADLESS_MAXMEM = "8G"
-& "$GHIDRA\\support\\analyzeHeadless.bat" analysis\\ghidra_proj Keepsmile `
-    -import ipa\\Payload\\Keepsmlie.app\\Keepsmlie
+& "$GHIDRA\support\analyzeHeadless.bat" analysis\ghidra_proj Keepsmile `
+    -import ipa\Payload\Keepsmlie.app\Keepsmlie
 ```
 
 The first analysis takes a while. Later runs reuse the project and skip analysis:
 
 ```powershell
-& "$GHIDRA\\support\\analyzeHeadless.bat" analysis\\ghidra_proj Keepsmile -process Keepsmlie -noanalysis -readOnly `
-    -scriptPath analysis\\ghidra_scripts -postScript <Script>.java <args>
+& "$GHIDRA\support\analyzeHeadless.bat" analysis\ghidra_proj Keepsmile -process Keepsmlie -noanalysis -readOnly `
+    -scriptPath analysis\ghidra_scripts -postScript <Script>.java <args>
 ```
 
 ### 4. Name the Objective-C call stubs
@@ -54,7 +54,7 @@ In arm64 builds, every `[obj selector]` call jumps through a tiny `objc_msgSend`
 selector string it loads and writes a `stub name<TAB>selector` table:
 
 ```powershell
-... -postScript ResolveStubs.java analysis\\stubs.tsv
+... -postScript ResolveStubs.java analysis\stubs.tsv
 ```
 
 ### 5. Decompile the Bluetooth code
@@ -71,8 +71,8 @@ in a file because batch-file arguments mangle `|`. The `pattern*.txt` files are 
 | `pattern5.txt` | the post-connect handshake and the state-report parser |
 
 ```powershell
-... -postScript DumpMatching.java analysis\\pattern.txt analysis\\decomp_ble.c
-python analysis\\apply_stubs.py analysis\\stubs.tsv analysis\\decomp_ble.c analysis\\decomp_ble_named.c
+... -postScript DumpMatching.java analysis\pattern.txt analysis\decomp_ble.c
+python analysis\apply_stubs.py analysis\stubs.tsv analysis\decomp_ble.c analysis\decomp_ble_named.c
 ```
 
 `apply_stubs.py` rewrites `objc_stub::FUN_…` calls into their selector names using `stubs.tsv`.
@@ -81,7 +81,7 @@ Some packets are copied from constants (Ghidra shows them as `DAT_100dbcb88` and
 `read_consts.py <ipa> <length> <address>...` maps those addresses to file offsets and prints the bytes:
 
 ```powershell
-python analysis\\read_consts.py com.KS.KSLights-2.3.5.ipa 8 100dbcb88 100dbcba8
+python analysis\read_consts.py com.KS.KSLights-2.3.5.ipa 8 100dbcb88 100dbcba8
 ```
 
 `XrefStrings.java` lists the functions that reference a given string. That's how the code that checks the `KS03-` /
